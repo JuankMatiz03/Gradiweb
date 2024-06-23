@@ -17,7 +17,6 @@ export default {
     'no-trailing-spaces': 'error',
     'eol-last': ['error', 'always'],
     'no-unused-vars': ['error', { 'args': 'none' }],
-    'no-console': 'warn',
     'no-debugger': 'error',
     'no-var': 'error',
     'prefer-const': 'error',

@@ -1,1 +1,0 @@
-import HomeView from"./views/home/home.js";const APP_CONTAINER_ID="app";async function initApp(){try{const e=new HomeView;renderView(await e.initializeView())}catch(e){throw e}}function renderView(e){document.getElementById(APP_CONTAINER_ID).innerHTML=e}document.addEventListener("DOMContentLoaded",initApp);
