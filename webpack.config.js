@@ -1,4 +1,4 @@
-import path from 'path';
+import path, { resolve } from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
@@ -12,13 +12,14 @@ const __dirname = path.dirname(__filename);
 export default {
     entry: {
         main: './src/index.js',
-        home: './src/views/home/home.js'
+        home: './src/views/home/home.js',
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[contenthash].js',
         assetModuleFilename: 'assets/[name][hash][ext][query]',
         clean: true,
+        publicPath: '/',
     },
     devServer: {
         static: {
@@ -28,8 +29,24 @@ export default {
         port: 8080,
         open: true,
     },
+    resolve: {
+        extensions: [
+            '.js',
+            '.mjs',
+            '.json'
+        ],
+        alias: {
+            '@views': path.resolve(__dirname, 'src/views'),
+            '@utils': path.resolve(__dirname, 'src/utils'),
+        },
+    },
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: 'babel-loader',
+            },
             {
                 test: /\.(scss|css)$/,
                 use: [

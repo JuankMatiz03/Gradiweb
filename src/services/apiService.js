@@ -6,7 +6,9 @@ class ApiService {
    */
   async fetchProducts() {
     try {
-      const response = await fetch('https://gradistore-spi.herokuapp.com/products/all');
+      const response = await fetch(
+        'https://gradistore-spi.herokuapp.com/products/all',
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }

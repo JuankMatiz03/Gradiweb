@@ -1,7 +1,7 @@
 import HomeView from './views/home/home.js';
 
 /**
- * Function to initialize the application by loading the home view
+ * function to initialize the application
  */
 async function initApp() {
   try {

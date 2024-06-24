@@ -1,5 +1,28 @@
 @import "~bootstrap/scss/bootstrap";
+@import '~swiper/swiper-bundle.css';
 
-h1 {
-    color: red;
+.swiper-container {
+    width: 600px;
+    height: 300px;
+}
+
+.swiper-slide {
+  text-align: center;
+}
+
+.card {
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  height: 200px; /* Ajusta la altura de la imagen */
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1rem;
 }

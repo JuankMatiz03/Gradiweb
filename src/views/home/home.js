@@ -1,5 +1,8 @@
 import './home.scss';
 import ApiService from './../../services/apiService.js';
+import { loadComponent } from './../../utils/helpers.js';
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
 
 class HomeView {
   constructor() {
@@ -7,46 +10,82 @@ class HomeView {
   }
 
   /**
-   * Initialize home view by loading and rendering the HTML and fetching products
+   * initialize home view and rendering the HTML and fetching products
    */
   async initialize() {
     try {
-      const html = await this.loadView();
-      this.renderView(html);
-      await this.getProducts();
+      await this.renderView();
+      await this.renderCarouselComponent();
     } catch (error) {
       console.error('Error initializing HomeView:', error);
     }
   }
 
   /**
-   * Load HTML content from a remote file
-   * @returns {Promise<string>} HTML content as a string
-   * @throws {Error} If the fetch operation fails
+   * render view page home
    */
-  async loadView() {
-    const response = await fetch('./home.html');
-    if (!response.ok) {
-      throw new Error(`Failed to load home.html file, status: ${response.status}`);
-    }
-    return await response.text();
-  }
-
-  /**
-   * Render the HTML content in the DOM
-   * @param {string} html - The HTML content to render
-   */
-  renderView(html) {
-    const appSection = document.getElementById('app');
+  async renderView() {
+    const template = await loadComponent('./home.html');
+    const section = 'app';
+    const appSection = document.getElementById(section);
     if (appSection) {
-      appSection.innerHTML = html;
+      appSection.innerHTML = template;
     } else {
       console.error('App container not found');
     }
   }
 
   /**
-   * Fetch products from the API and handle them
+   * Initialize Swiper for the carousel component
+   * @param {Array} products - Array of product objects
+   */
+  async renderCarouselComponent() {
+    // Ensure DOM is updated before initializing Swiper
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        new Swiper('.swiper-container', {
+          loop: true,
+          pagination: {
+            el: '.swiper-pagination',
+          },
+          slidesPerView: 'auto',
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          scrollbar: {
+            el: '.swiper-scrollbar',
+          },
+        });
+
+        this.htmlCarousel();
+      }, 0); // Use setTimeout to ensure DOM is updated
+    });
+  }
+
+  /**
+   * Add carousel slides dynamically
+   */
+  htmlCarousel() {
+    const swiperWrapper = document.querySelector('.swiper-wrapper');
+    for (let i = 0; i < 10; i++) {
+      const slide = document.createElement('div');
+      slide.classList.add('swiper-slide');
+      slide.innerHTML = `
+        <div class="card">
+          <!-- <img src="imagen${i + 1}.jpg" class="card-img-top" alt="Imagen del Producto ${i + 1}"> -->
+          <div class="card-body">
+            <h5 class="card-title">Producto ${i + 1}</h5>
+            <p class="card-text">Descripción breve del Producto ${i + 1}.</p>
+          </div>
+        </div>
+      `;
+      swiperWrapper.appendChild(slide);
+    }
+  }
+
+  /**
+   * fetch products from the API and handle them
    */
   async getProducts() {
     try {
@@ -58,11 +97,11 @@ class HomeView {
   }
 
   /**
-   * Handle the fetched products
-   * @param {Array} products - Array of product objects
+   * handle the fetched products and call renderCarouselComponent
+   * @param {Array} products - array of product objects
    */
   handleProducts(products) {
-    console.log('Products:', products);
+    this.renderCarouselComponent(products);
   }
 }
 
